@@ -125,24 +125,6 @@ public class Canvas
     }
 
     /**
-     * Wait for a specified number of milliseconds before finishing.
-     * This provides an easy way to specify a small delay which can be
-     * used when producing animations.
-     * @param  milliseconds  the number 
-     */
-    public void wait(int milliseconds)
-    {
-        try
-        {
-            Thread.sleep(milliseconds);
-        } 
-        catch (Exception e)
-        {
-            // ignoring exception at the moment
-        }
-    }
-
-    /**
      * Redraw ell shapes currently on the Canvas.
      */
     private void redraw()

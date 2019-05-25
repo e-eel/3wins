@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 /**
  * Beschreiben Sie hier die Klasse Playground.
@@ -30,7 +31,9 @@ public class Playground
         }
         
         chips[column][y] = chip;
+        draw();
         return "";
+
     }
     private Chip checkColoumn(int column){
         int redCounter=0;
@@ -111,21 +114,53 @@ public class Playground
        
     }
 
-    public void draw() {
+    private void draw() {
         for(int row=0; row<SIZE; row++){
             for(int column=0; column<SIZE;column++){
                 Square wall = new Square();
                 wall.moveVertical(82*row);
                 wall.moveHorizontal(82*column);
                 wall.changeSize(80);
-                wall.makeVisible();
-                Circle circle = new Circle();
-                circle.moveVertical(82*row-18);
-                circle.moveHorizontal(82*column+32);
-                circle.changeSize(75);
-                circle.makeVisible();
+                wall.makeVisible(); 
+                Chip chip = chips[column][row];
+                if (chip != null) {
+                    Circle circle = new Circle();
+                    circle.changeColor(chip.toString());
+                    circle.moveVertical(82*row-18);
+                    circle.moveHorizontal(82*column+32);
+                    circle.changeSize(75);
+                    circle.makeVisible();
+                }
             }
         }
         
     }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Playground playground = new Playground();
+        System.out.println("You are green.");
+        System.out.println("exit with q");
+        while(true) {
+            if (scanner.hasNext()) {
+                if (scanner.hasNextInt()) {
+                    int r=scanner.nextInt();
+                    String result = playground.placeChipInColumn(r, Chip.GREEN);
+                    System.out.println(result);
+                } else {
+                    String s = scanner.next();
+                    if (s.equals("q")) {
+                        break;
+                    }
+                }
+                Chip winner = playground.theWinnerIs();
+                if (winner != null) {
+                    System.out.println("the winner is: " + winner.name());
+                    break;
+                }
+            }
+        
+        }
+    }
+    
 }

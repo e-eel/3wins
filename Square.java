@@ -174,7 +174,7 @@ public class Square
             Canvas canvas = Canvas.getCanvas();
             canvas.draw(this, color,
                     new Rectangle(xPosition, yPosition, size, size));
-            canvas.wait(10);
+            
         }
     }
 

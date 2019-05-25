@@ -7,5 +7,14 @@
  */
 public enum Chip
 {
-    RED, GREEN
+    RED("#cc0000"), GREEN("#00cc00");
+    private String colorName; 
+    private Chip(String color) { 
+        colorName = color; 
+    } 
+    
+    @Override 
+    public String toString(){ 
+        return colorName; 
+    } 
 }
