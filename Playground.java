@@ -9,6 +9,8 @@ import java.util.Scanner;
 public class Playground
 {
     static final int SIZE=5;
+    static final int WINS=3;
+
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
     protected Chip chips[][] = new Chip[SIZE][SIZE];
 
@@ -54,10 +56,10 @@ public class Playground
                     break;
                 
             }
-            if (redCounter>=3){
+            if (redCounter>=WINS){
                 return Chip.RED;
             }
-            if (greenCounter>=3){
+            if (greenCounter>=WINS){
                 return Chip.GREEN;
             }
         }
@@ -85,18 +87,95 @@ public class Playground
                 
                     }
                 }
-            if (redCounter>=3){
+            if (redCounter>=WINS){
                 return Chip.RED;
             }
-            if (greenCounter>=3){
+            if (greenCounter>=WINS){
                 return Chip.GREEN;
             }
         }
         
         return null;
     }
+    
+    private Chip checkDiogonals() {
+        for (int diag=WINS-1;diag<SIZE + WINS-1;diag++) {
+            
+            // raising diagonals
+            int redCounter=0;
+            int greenCounter=0;
+            for (int x =0, y=diag; y>0;x++,y--){
+                if(y>=SIZE){
+                    continue;
+                }
+    
+                Chip chip = chips[x][y];
+                if(chip==null){
+                    greenCounter=0;
+                    redCounter=0;
+                }else{
+                    switch(chip) {
+                        case RED:
+                            redCounter++;
+                            greenCounter=0;
+                            break;
+                        case GREEN:
+                            greenCounter++;
+                            redCounter=0;
+                            break;
+                    
+                        }
+                    }
+                if (redCounter>=WINS){
+                    return Chip.RED;
+                }
+                if (greenCounter>=WINS){
+                    return Chip.GREEN;
+                }
+            }
+
+
+
+
+            // falling diagonals
+            redCounter=0;
+            greenCounter=0;
+            for (int x =SIZE-1, y=diag; y>0;x--,y--){
+                if(y>=SIZE){
+                    continue;
+                }
+    
+                Chip chip = chips[x][y];
+                if(chip==null){
+                    greenCounter=0;
+                    redCounter=0;
+                }else{
+                    switch(chip) {
+                        case RED:
+                            redCounter++;
+                            greenCounter=0;
+                            break;
+                        case GREEN:
+                            greenCounter++;
+                            redCounter=0;
+                            break;
+                    
+                        }
+                    }
+                if (redCounter>=WINS){
+                    return Chip.RED;
+                }
+                if (greenCounter>=WINS){
+                    return Chip.GREEN;
+                }
+            }
+        }
+        return null;
+    }
+    
     public Chip theWinnerIs(){
-        
+        // ToDo: What happens if the table is completly full
+        // ToDo: create methods for checkRows and checkColumns (like checkDiagonals)
         for(int column=0;column< SIZE; column++){
             Chip winner=checkColoumn(column);
             if(winner!=null){
@@ -110,8 +189,14 @@ public class Playground
                   return winner;
             }
         }
-        return null;
+        Chip winner=checkDiogonals();
+        return winner;
        
+    }
+    
+    public String botPlace(Chip chip) {
+        placeChipInColumn(0, chip);
+        return "";
     }
 
     private void draw() {
@@ -154,6 +239,13 @@ public class Playground
                     }
                 }
                 Chip winner = playground.theWinnerIs();
+                if (winner != null) {
+                    System.out.println("the winner is: " + winner.name());
+                    break;
+                }
+                
+                playground.botPlace(Chip.RED);
+                winner = playground.theWinnerIs();
                 if (winner != null) {
                     System.out.println("the winner is: " + winner.name());
                     break;

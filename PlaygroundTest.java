@@ -13,33 +13,6 @@ import org.junit.Test;
  */
 public class PlaygroundTest
 {
-    /**
-     * Konstruktor fuer die Test-Klasse PlaygroundTest
-     */
-    public PlaygroundTest()
-    {
-    }
-
-    /**
-     *  Setzt das Testgerüst fuer den Test.
-     *
-     * Wird vor jeder Testfall-Methode aufgerufen.
-     */
-    @Before
-    public void setUp()
-    {
-    }
-
-    /**
-     * Gibt das Testgerüst wieder frei.
-     *
-     * Wird nach jeder Testfall-Methode aufgerufen.
-     */
-    @After
-    public void tearDown()
-    {
-    }
-
     @Test
     public void playground_should_be_initially_empty()
     {
@@ -51,6 +24,7 @@ public class PlaygroundTest
         }
         
     }
+
 
     @Test
     public void check_winner_should_return_red_if_there_is_a_line_of_red_in_the_playground()
@@ -65,6 +39,25 @@ public class PlaygroundTest
         playground.placeChipInColumn(2,Chip.RED);
         Chip result= playground.theWinnerIs();
         assertEquals(Chip.RED,result);
+    }
+    @Test
+    public void bot_should_place_a_new_chip ()
+    {
+        Playground playground = new Playground();
+
+        playground.botPlace(Chip.RED);
+        int counter=0;
+        for (int x=0; x<Playground.SIZE; x++) {
+            for (int y=0; y<Playground.SIZE; y++) {
+                if(playground.chips[x][y]==Chip.RED){
+                    counter++;
+                }
+            }
+        }
+        assertEquals(1,counter);
+
+        
+       
     }
     
     @Test
@@ -82,6 +75,68 @@ public class PlaygroundTest
         assertEquals(Chip.GREEN,playground.chips[2][4]);
         assertEquals(Chip.GREEN,playground.chips[3][4]);
         assertEquals(Chip.GREEN,playground.chips[4][4]);
+    }
+    
+    @Test
+    public void green_raising_diagonale_should_win()
+    {
+        Playground playground = new Playground();
+        
+        playground.placeChipInColumn(0,Chip.GREEN);
+        playground.placeChipInColumn(1,Chip.RED);
+        playground.placeChipInColumn(1,Chip.GREEN);
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.GREEN);
+        Chip chip = playground.theWinnerIs();
+        assertEquals(Chip.GREEN,chip);
+    }
+
+        @Test
+    public void green_raising_diagonale2_should_win()
+    {
+        Playground playground = new Playground();
+        
+        playground.placeChipInColumn(1,Chip.GREEN);
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.GREEN);
+        playground.placeChipInColumn(3,Chip.RED);
+        playground.placeChipInColumn(3,Chip.RED);
+        playground.placeChipInColumn(3,Chip.GREEN);
+        Chip chip = playground.theWinnerIs();
+        assertEquals(Chip.GREEN,chip);
+    }
+    
+    @Test
+    public void green_raising_diagonale3_should_win()
+    {
+        Playground playground = new Playground();
+        
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.GREEN);
+        playground.placeChipInColumn(3,Chip.RED);
+        playground.placeChipInColumn(3,Chip.RED);
+        playground.placeChipInColumn(3,Chip.GREEN);
+        playground.placeChipInColumn(4,Chip.GREEN);
+        playground.placeChipInColumn(4,Chip.RED);
+        playground.placeChipInColumn(4,Chip.RED);
+        playground.placeChipInColumn(4,Chip.GREEN);
+        Chip chip = playground.theWinnerIs();
+        assertEquals(Chip.GREEN,chip);
+    }
+    @Test
+    public void green_falling_diagonale_should_win()
+    {
+        Playground playground = new Playground();
+        
+        playground.placeChipInColumn(4,Chip.GREEN);
+        playground.placeChipInColumn(3,Chip.RED);
+        playground.placeChipInColumn(3,Chip.GREEN);
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.RED);
+        playground.placeChipInColumn(2,Chip.GREEN);
+        Chip chip = playground.theWinnerIs();
+        assertEquals(Chip.GREEN,chip);
     }
     
     @Test
