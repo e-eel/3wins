@@ -104,7 +104,7 @@ public class Playground
             // raising diagonals
             int redCounter=0;
             int greenCounter=0;
-            for (int x =0, y=diag; y>0;x++,y--){
+            for (int x =0, y=diag; y>=0 && x<SIZE;x++,y--){
                 if(y>=SIZE){
                     continue;
                 }
@@ -140,7 +140,7 @@ public class Playground
             // falling diagonals
             redCounter=0;
             greenCounter=0;
-            for (int x =SIZE-1, y=diag; y>0;x--,y--){
+            for (int x =SIZE-1, y=diag; y>=0 && x>=0;x--,y--){
                 if(y>=SIZE){
                     continue;
                 }
@@ -195,7 +195,7 @@ public class Playground
     }
     
     public String botPlace(Chip chip) {
-        placeChipInColumn(0, chip);
+        placeChipInColumn((int)( Math.random()*SIZE ), chip);
         return "";
     }
 

@@ -23,6 +23,14 @@ public class PlaygroundTest
             }
         }
         
+    } 
+
+    @Test
+    public void empty_playground_should_have_no_winner()
+    {
+        Playground playground = new Playground();
+        Chip chip = playground.theWinnerIs();
+        assertEquals(null,chip);
     }
 
 
