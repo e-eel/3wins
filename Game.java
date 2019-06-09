@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
 /**
- * Beschreiben Sie hier die Klasse Playground.
+ * Beschreiben Sie hier die Klasse Game.
  * 
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class Playground
+public class Game
 {
     private int wins=3;
 
 
-    public Playground(int wins) {
+    public Game(int wins) {
         this.wins = wins;
     }
 
@@ -216,7 +216,7 @@ public class Playground
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Playground playground = new Playground(3);
+        Game game = new Game(3);
         Chip field[][] = new Chip[5][5];
 
         System.out.println("You are green.");
@@ -225,7 +225,7 @@ public class Playground
             if (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
                     int r=scanner.nextInt();
-                    String result = playground.placeChipInColumn(field, r, Chip.GREEN);
+                    String result = game.placeChipInColumn(field, r, Chip.GREEN);
                     System.out.println(result);
                 } else {
                     String s = scanner.next();
@@ -233,14 +233,14 @@ public class Playground
                         break;
                     }
                 }
-                Chip winner = playground.theWinnerIs(field);
+                Chip winner = game.theWinnerIs(field);
                 if (winner != null) {
                     System.out.println("the winner is: " + winner.name());
                     break;
                 }
                 
-                playground.botPlace(field, Chip.RED);
-                winner = playground.theWinnerIs(field);
+                game.botPlace(field, Chip.RED);
+                winner = game.theWinnerIs(field);
                 if (winner != null) {
                     System.out.println("the winner is: " + winner.name());
                     break;
