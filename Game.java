@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -20,7 +21,7 @@ public class Game
             return "column is full";
         }
         
-        int y=field.length-1;
+        int y=field[0].length-1;
         
         for (; field[column][y] != null; y--) {
         }
@@ -33,7 +34,7 @@ public class Game
     private Chip checkColoumn(Chip[][] field, int column){
         int redCounter=0;
         int greenCounter=0;
-        for(int y= field.length-1; y>=0; y--){
+        for(int y= field[0].length-1; y>=0; y--){
             Chip chip = field[column][y];
             if (chip==null){
                 return null;
@@ -98,7 +99,7 @@ public class Game
             int redCounter=0;
             int greenCounter=0;
             for (int x =0, y=diag; y>=0 && x<field.length;x++,y--){
-                if(y>=field.length){
+                if(y>=field[0].length){
                     continue;
                 }
     
@@ -134,7 +135,7 @@ public class Game
             redCounter=0;
             greenCounter=0;
             for (int x =field.length-1, y=diag; y>=0 && x>=0;x--,y--){
-                if(y>=field.length){
+                if(y>=field[0].length){
                     continue;
                 }
     
@@ -176,7 +177,7 @@ public class Game
             }
         }
         
-        for(int row=0;row< field.length; row++){
+        for(int row=0;row< field[0].length; row++){
             Chip winner=checkRow(field, row);
             if(winner!=null){
                   return winner;
@@ -191,8 +192,103 @@ public class Game
         placeChipInColumn(field, (int)( Math.random()*field.length ), chip);
         return "";
     }
+    public Double liklihoodToWin(int depth, Chip[][] field, int column, Chip chip){
+        System.out.println("liklihoodToWin "+depth+" "+column+" "+chip);            
+        System.out.println("---");
+        for (int y=0; y<field[0].length; y++) {
+            for (int x=0; x<field.length; x++) {
+                Chip c = field[x][y];
+                if (c==null) {
+                   System.out.print(" ");
+                } else if (c==Chip.GREEN) {
+                    System.out.print("X");
+                } else {
+                    System.out.print("O");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("---");
+        
+        Chip winner = theWinnerIs (field);
+        if ( winner != null) {
+            if (winner == chip) {
+                System.out.println("return 1.0 "+depth);
+                return 1.0;
+            } else {
+                System.out.println("return 0.0 "+depth);
+                return 0.0;
+            }
+        }
+
+        field = Arrays.stream(field).map(r -> r.clone()).toArray(Chip[][]::new);
+        String result = placeChipInColumn(field, column, chip);
+        
+        for (int y=0; y<field[0].length; y++) {
+            for (int x=0; x<field.length; x++) {
+                Chip c = field[x][y];
+                if (c==null) {
+                   System.out.print(" ");
+                } else if (c==Chip.GREEN) {
+                    System.out.print("X");
+                } else {
+                    System.out.print("O");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("---");
+        
+        if (!"".equals(result)) {
+            // the column is full
+            System.out.println("return null "+depth);
+            return null;
+        }
+      
+        winner = theWinnerIs (field);
+        if ( winner != null) {
+            if (winner == chip) {
+                System.out.println("return 1.0 "+depth);
+                return 1.0;
+            } else {
+                System.out.println("return 0.0 "+depth);
+                return 0.0;
+            }
+        }
+        
+        Chip other;
+        if (chip==Chip.GREEN){
+            other =Chip.RED;
+        }else{
+            other =Chip.GREEN;
+        }
+        int pathCount=0;
+        double sum=0.0;
+        System.out.println("start me="+chip);
+        for(int c=0; c<field.length; c++){
+            System.out.println("liklihoodToWin(field, c, other)"+c+" "+other);
+            Double liklihoodToWin = liklihoodToWin(depth+1, field, c, other);
+            System.out.println("liklihoodToWin="+liklihoodToWin);
+            if (liklihoodToWin!=null) {
+                sum = sum + liklihoodToWin;
+                pathCount++;
+            }
+            System.out.println("sum=" + sum+ " "+pathCount);
+
+        }
+        System.out.println("end sum="+sum+" pathCount="+pathCount);
+        if (pathCount!=0) {
+            double likelihood = 1 - (sum / pathCount);
+            System.out.println("return "+likelihood+" "+depth);
+            return likelihood;
+        } else {
+            System.out.println("return null-b "+depth);
+            return null;
+        }
+    }
 
     private void draw(Chip[][] field) {
+        /*
         for(int row=0; row<field.length; row++){
             for(int column=0; column<field.length;column++){
                 Square wall = new Square();
@@ -211,7 +307,7 @@ public class Game
                 }
             }
         }
-        
+        */
     }
     
     public static void main(String[] args) {
@@ -227,6 +323,10 @@ public class Game
                     int r=scanner.nextInt();
                     String result = game.placeChipInColumn(field, r, Chip.GREEN);
                     System.out.println(result);
+                    
+                    if (!"".equals(result)){
+                        continue;
+                    }
                 } else {
                     String s = scanner.next();
                     if (s.equals("q")) {

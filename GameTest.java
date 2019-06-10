@@ -218,6 +218,134 @@ public class GameTest
         assertEquals ("column is full",result);
         
     }  
+
+    @Test
+    public void liklihood_to_win_should_return_1_in_a_field_with_two_chips_in_a_column()
+    {
+        Game game = new Game(WINS);
+        Chip field[][] = new Chip[5][5];
+        
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 2,Chip.RED);
+        double result=game.liklihoodToWin(0, field, 2,Chip.RED);
+        assertEquals (1.0,result,0.0001);
+        
+    }
+    @Test
+    public void liklihood_to_win_should_return_null_if_the_column_is_full()
+    {
+        Game game = new Game(WINS);
+        Chip field[][] = new Chip[5][5];
+        
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 2,Chip.GREEN);
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 2,Chip.RED);
+        Double result=game.liklihoodToWin(0, field, 2,Chip.RED);
+        assertEquals (null,result);
+        
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_0_in_a_clear_3x3_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][3];
+        game.placeChipInColumn(field, 0,Chip.GREEN);
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 2,Chip.GREEN);
+        double result=game.liklihoodToWin(0, field,2,Chip.RED);
+        assertEquals (0.0,result,0.0001);
+        
+    }
+
+    @Test
+    public void liklihood_to_win_should_return_1_00_in_a_empty_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        double result=game.liklihoodToWin(0, field,1,Chip.RED);
+        assertEquals (1.0,result,0.0001);
+    }
+
+    @Test
+    public void liklihood_to_win_should_return_0_75_in_a_empty_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        double result=game.liklihoodToWin(0, field,2,Chip.RED);
+        assertEquals (0.75,result,0.0001);
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_0_25_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        double result=game.liklihoodToWin(0, field,2,Chip.GREEN);
+        assertEquals (0.25,result,0.0001);
+    }
+
+    @Test
+    public void liklihood_to_win_should_return_0_3333_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        double result=game.liklihoodToWin(0, field,1,Chip.GREEN);
+        assertEquals (1.0/3,result,0.0001);
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_0_1666_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        double result=game.liklihoodToWin(0, field,0,Chip.GREEN);
+        assertEquals (0.5/3,result,0.0001);
+        
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_0_5_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 0,Chip.GREEN);
+        double result=game.liklihoodToWin(0, field,0,Chip.RED);
+        assertEquals (0.5,result,0.0001);
+        
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_1_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 0,Chip.GREEN);
+        game.placeChipInColumn(field, 0,Chip.RED);
+        double result=game.liklihoodToWin(0, field,1,Chip.GREEN);
+        assertEquals (1.0,result,0.0001);
+        
+    }
+    
+    @Test
+    public void liklihood_to_win_should_return_0_in_a_prearanged_3x2_situation()
+    {
+        Game game = new Game(2);
+        Chip field[][] = new Chip[3][2];
+        game.placeChipInColumn(field, 2,Chip.RED);
+        game.placeChipInColumn(field, 0,Chip.GREEN);
+        game.placeChipInColumn(field, 0,Chip.RED);
+        double result=game.liklihoodToWin(0, field,2,Chip.GREEN);
+        assertEquals (0.0,result,0.0001);
+        
+    }
 }
 
 
