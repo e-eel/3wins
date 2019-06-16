@@ -195,8 +195,10 @@ public class Game
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        WinAlgorithm winAlgorithm = new NWinAlgorithm(3); 
+        //WinAlgorithm winAlgorithm = new NWinAlgorithm(3); 
+        WinAlgorithm winAlgorithm = new ThreeWinAlgorithm();
         Game game = new Game(winAlgorithm, 13);
+
         Chip field[][] = new Chip[5][5];
 
         System.out.println("You are green.");

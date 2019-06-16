@@ -16,6 +16,8 @@ public class GameTest
     static int SIZE = 5;
     static int CALCULATION_DEPTH=8;
     public WinAlgorithm n3winAlgorithm = new NWinAlgorithm(3);
+    //public WinAlgorithm n3winAlgorithm = new ThreeWinAlgorithm();
+    public WinAlgorithm threeWinAlgorithm = new ThreeWinAlgorithm();
     public WinAlgorithm n2winAlgorithm = new NWinAlgorithm(2);
    
     @Test
@@ -54,7 +56,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.RED);
         Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.RED,result);
+
+        assertEquals(field[2][4],field[2][3]);
+        assertEquals(true,field[2][4]==field[2][3]);
+
+        result= threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.RED,result);
     }
+
     @Test
     public void bot_should_place_a_new_chip ()
     {
@@ -108,9 +117,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.GREEN);
         Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
+
+
+        chip = threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,chip);
+
     }
 
-        @Test
+    @Test
     public void green_raising_diagonale2_should_win()
     {
         Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
@@ -124,7 +138,14 @@ public class GameTest
         game.placeChipInColumn(field, 3,Chip.GREEN);
         Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
+        
+        chip = threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,chip);
+
     }
+
+    
+    
     
     @Test
     public void green_raising_diagonale3_should_win()
@@ -143,6 +164,9 @@ public class GameTest
         game.placeChipInColumn(field, 4,Chip.GREEN);
         Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
+
+        chip = threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,chip);
     }
     @Test
     public void green_falling_diagonale_should_win()
@@ -157,6 +181,9 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.GREEN);
         Chip chip = n3winAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,chip);
+
+        chip = threeWinAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
     }
     
@@ -173,9 +200,12 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.GREEN);
         Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,result);
+
+        result = threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,result);
     }
     
-        @Test
+    @Test
     public void check_winner_should_return_GREEN_if_3_GREEN_are_botom_left()
     {
         Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
@@ -188,7 +218,11 @@ public class GameTest
         game.placeChipInColumn(field, 4,Chip.GREEN);
         Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,result);
+
+        result = threeWinAlgorithm.theWinnerIs(field);
+        assertEquals(Chip.GREEN,result);
     }
+
     
     @Test
     public void placeChipInColumn_should_add_a_chip_on_the_bottom()
