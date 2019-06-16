@@ -14,8 +14,10 @@ import org.junit.Test;
 public class GameTest
 {
     static int SIZE = 5;
-    static int WINS = 3;
-
+    static int CALCULATION_DEPTH=8;
+    public WinAlgorithm n3winAlgorithm = new NWinAlgorithm(3);
+    public WinAlgorithm n2winAlgorithm = new NWinAlgorithm(2);
+   
     @Test
     public void game_should_be_initially_empty()
     {
@@ -31,9 +33,9 @@ public class GameTest
     @Test
     public void empty_game_should_have_no_winner()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
-        Chip chip = game.theWinnerIs(field);
+        Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(null,chip);
     }
 
@@ -41,7 +43,7 @@ public class GameTest
     @Test
     public void check_winner_should_return_red_if_there_is_a_line_of_red_in_the_Game()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -50,13 +52,13 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.RED);
-        Chip result= game.theWinnerIs(field);
+        Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.RED,result);
     }
     @Test
     public void bot_should_place_a_new_chip ()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
 
         game.botPlace(field, Chip.RED);
@@ -77,7 +79,7 @@ public class GameTest
     @Test
     public void green_row_should_be_green()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -95,7 +97,7 @@ public class GameTest
     @Test
     public void green_raising_diagonale_should_win()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -104,14 +106,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.GREEN);
-        Chip chip = game.theWinnerIs(field);
+        Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
     }
 
         @Test
     public void green_raising_diagonale2_should_win()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 1,Chip.GREEN);
@@ -120,14 +122,14 @@ public class GameTest
         game.placeChipInColumn(field, 3,Chip.RED);
         game.placeChipInColumn(field, 3,Chip.RED);
         game.placeChipInColumn(field, 3,Chip.GREEN);
-        Chip chip = game.theWinnerIs(field);
+        Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
     }
     
     @Test
     public void green_raising_diagonale3_should_win()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -139,13 +141,13 @@ public class GameTest
         game.placeChipInColumn(field, 4,Chip.RED);
         game.placeChipInColumn(field, 4,Chip.RED);
         game.placeChipInColumn(field, 4,Chip.GREEN);
-        Chip chip = game.theWinnerIs(field);
+        Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
     }
     @Test
     public void green_falling_diagonale_should_win()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 4,Chip.GREEN);
@@ -154,14 +156,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 2,Chip.GREEN);
-        Chip chip = game.theWinnerIs(field);
+        Chip chip = n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,chip);
     }
     
     @Test
     public void check_winner_should_return_GREEN_if_3_GREEN_are_on_the_top()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.GREEN);
@@ -169,14 +171,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.GREEN);
         game.placeChipInColumn(field, 2,Chip.GREEN);
         game.placeChipInColumn(field, 2,Chip.GREEN);
-        Chip result= game.theWinnerIs(field);
+        Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,result);
     }
     
         @Test
     public void check_winner_should_return_GREEN_if_3_GREEN_are_botom_left()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -184,14 +186,14 @@ public class GameTest
         game.placeChipInColumn(field, 2,Chip.GREEN);
         game.placeChipInColumn(field, 3,Chip.GREEN);
         game.placeChipInColumn(field, 4,Chip.GREEN);
-        Chip result= game.theWinnerIs(field);
+        Chip result= n3winAlgorithm.theWinnerIs(field);
         assertEquals(Chip.GREEN,result);
     }
     
     @Test
     public void placeChipInColumn_should_add_a_chip_on_the_bottom()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -204,7 +206,7 @@ public class GameTest
     @Test
     public void placeChipInColumn_should_return_an_error_on_a_full_column()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -222,7 +224,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_1_in_a_field_with_two_chips_in_a_column()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -234,7 +236,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_null_if_the_column_is_full()
     {
-        Game game = new Game(WINS);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -250,7 +252,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_in_a_clear_3x3_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][3];
         game.placeChipInColumn(field, 0,Chip.GREEN);
         game.placeChipInColumn(field, 2,Chip.RED);
@@ -263,7 +265,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_1_00_in_a_empty_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         double result=game.liklihoodToWin(0, field,1,Chip.RED);
         assertEquals (1.0,result,0.0001);
@@ -272,7 +274,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_75_in_a_empty_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         double result=game.liklihoodToWin(0, field,2,Chip.RED);
         assertEquals (0.75,result,0.0001);
@@ -281,7 +283,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_25_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         double result=game.liklihoodToWin(0, field,2,Chip.GREEN);
@@ -291,7 +293,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_3333_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         double result=game.liklihoodToWin(0, field,1,Chip.GREEN);
@@ -301,7 +303,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_1666_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         double result=game.liklihoodToWin(0, field,0,Chip.GREEN);
@@ -312,7 +314,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_5_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -324,7 +326,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_1_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -337,7 +339,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_in_a_prearanged_3x2_situation()
     {
-        Game game = new Game(2);
+        Game game = new Game(n2winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[3][2];
         game.placeChipInColumn(field, 2,Chip.RED);
         game.placeChipInColumn(field, 0,Chip.GREEN);
@@ -349,7 +351,7 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_58_in_the_middle_column_in_a_5x5_playground()
     {
-        Game game = new Game(3);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         double result=game.liklihoodToWin(0, field,2,Chip.GREEN);
         assertEquals (0.58,result,0.01);
@@ -358,37 +360,37 @@ public class GameTest
     @Test
     public void liklihood_to_win_should_return_0_58_in_the_left_column_in_a_5x5_playground()
     {
-        Game game = new Game(3);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         double result=game.liklihoodToWin(0, field,1,Chip.GREEN);
-        assertEquals (0.0,result,0.01);
+        assertEquals (0.40,result,0.01);
         
     }
     @Test
     public void liklihood_to_win_should_return_0_58_in_the_far_left_column_in_a_5x5_playground()
     {
-        Game game = new Game(3);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         double result=game.liklihoodToWin(0, field,0,Chip.GREEN);
-        assertEquals (0.0,result,0.01);
+        assertEquals (0.31,result,0.01);
         
     }
     @Test
     public void liklihood_to_win_should_return_0_58_in_the_right_column_in_a_5x5_playground()
     {
-        Game game = new Game(3);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         double result=game.liklihoodToWin(0, field,3,Chip.GREEN);
-        assertEquals (0.0,result,0.01);
+        assertEquals (0.40,result,0.01);
         
     }
     @Test
     public void liklihood_to_win_should_return_0_58_in_the_far_right_column_in_a_5x5_playground()
     {
-        Game game = new Game(3);
+        Game game = new Game(n3winAlgorithm,CALCULATION_DEPTH);
         Chip field[][] = new Chip[5][5];
         double result=game.liklihoodToWin(0, field,4,Chip.GREEN);
-        assertEquals (0.0,result,0.01);
+        assertEquals (0.31,result,0.01);
         
     }
 }
