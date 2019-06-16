@@ -10,7 +10,8 @@ import java.util.Scanner;
 public class Game
 {
     private int wins=3;
-
+    private int calculationDeth=13;
+    private int likelihoodToWinCallCounter=0;
 
     public Game(int wins) {
         this.wins = wins;
@@ -27,7 +28,6 @@ public class Game
         }
         
         field[column][y] = chip;
-        draw(field);
         return "";
 
     }
@@ -189,10 +189,41 @@ public class Game
     }
     
     public String botPlace(Chip[][] field, Chip chip) {
-        placeChipInColumn(field, (int)( Math.random()*field.length ), chip);
-        return "";
+        double bestLiklihoodToWin=0;
+        int bestColumn=0;
+        for(int column=0;column< field.length; column++){
+            Double liklihoodToWin=liklihoodToWin(0, field, column, chip);
+            System.out.println(column+" "+liklihoodToWin);
+            if (liklihoodToWin==null){
+                continue;
+            }
+
+            if(liklihoodToWin>bestLiklihoodToWin){
+                bestLiklihoodToWin=liklihoodToWin;
+                bestColumn=column;
+            }
+
+        }
+        System.out.println(String.format("I will win with %.2f (tried %d combinations)",bestLiklihoodToWin,likelihoodToWinCallCounter));
+
+        return placeChipInColumn(field,bestColumn,chip);
     }
+
     public Double liklihoodToWin(int depth, Chip[][] field, int column, Chip chip){
+
+        // collect statistic information
+        if (depth==0) {
+            likelihoodToWinCallCounter=0;
+        } else {
+            likelihoodToWinCallCounter++;
+        }
+
+        // limit calculation
+        if (depth>= calculationDeth) {
+            return null;
+        }
+       
+        /*
         System.out.println("liklihoodToWin "+depth+" "+column+" "+chip);            
         System.out.println("---");
         for (int y=0; y<field[0].length; y++) {
@@ -209,26 +240,28 @@ public class Game
             System.out.println("");
         }
         System.out.println("---");
-        
+        */
         Chip winner = theWinnerIs (field);
         if ( winner != null) {
             if (winner == chip) {
-                System.out.println("return 1.0 "+depth);
+                //System.out.println("return 1.0 "+depth);
                 return 1.0;
             } else {
-                System.out.println("return 0.0 "+depth);
+                //System.out.println("return 0.0 "+depth);
                 return 0.0;
             }
         }
 
+        // copy field completely ("call by value")
         field = Arrays.stream(field).map(r -> r.clone()).toArray(Chip[][]::new);
         String result = placeChipInColumn(field, column, chip);
         
+        /*
         for (int y=0; y<field[0].length; y++) {
             for (int x=0; x<field.length; x++) {
                 Chip c = field[x][y];
                 if (c==null) {
-                   System.out.print(" ");
+                    System.out.print(" ");
                 } else if (c==Chip.GREEN) {
                     System.out.print("X");
                 } else {
@@ -238,20 +271,21 @@ public class Game
             System.out.println("");
         }
         System.out.println("---");
-        
+        */
+
         if (!"".equals(result)) {
             // the column is full
-            System.out.println("return null "+depth);
+            //System.out.println("return null "+depth);
             return null;
         }
       
         winner = theWinnerIs (field);
         if ( winner != null) {
             if (winner == chip) {
-                System.out.println("return 1.0 "+depth);
+                //System.out.println("return 1.0 "+depth);
                 return 1.0;
             } else {
-                System.out.println("return 0.0 "+depth);
+                //System.out.println("return 0.0 "+depth);
                 return 0.0;
             }
         }
@@ -264,32 +298,32 @@ public class Game
         }
         int pathCount=0;
         double sum=0.0;
-        System.out.println("start me="+chip);
+        //System.out.println("start me="+chip);
         for(int c=0; c<field.length; c++){
-            System.out.println("liklihoodToWin(field, c, other)"+c+" "+other);
+            //System.out.println("liklihoodToWin(field, c, other)"+c+" "+other);
             Double liklihoodToWin = liklihoodToWin(depth+1, field, c, other);
-            System.out.println("liklihoodToWin="+liklihoodToWin);
+            //System.out.println("liklihoodToWin="+liklihoodToWin);
             if (liklihoodToWin!=null) {
                 sum = sum + liklihoodToWin;
                 pathCount++;
             }
-            System.out.println("sum=" + sum+ " "+pathCount);
+            //System.out.println("sum=" + sum+ " "+pathCount);
 
         }
-        System.out.println("end sum="+sum+" pathCount="+pathCount);
+        //System.out.println("end sum="+sum+" pathCount="+pathCount);
         if (pathCount!=0) {
             double likelihood = 1 - (sum / pathCount);
-            System.out.println("return "+likelihood+" "+depth);
+            //System.out.println("return "+likelihood+" "+depth);
             return likelihood;
         } else {
-            System.out.println("return null-b "+depth);
+            //System.out.println("return null-b "+depth);
             return null;
         }
     }
 
     private void draw(Chip[][] field) {
-        /*
-        for(int row=0; row<field.length; row++){
+        
+        for(int row=0; row<field[0].length; row++){
             for(int column=0; column<field.length;column++){
                 Square wall = new Square();
                 wall.moveVertical(82*row);
@@ -307,7 +341,7 @@ public class Game
                 }
             }
         }
-        */
+        
     }
     
     public static void main(String[] args) {
@@ -318,6 +352,7 @@ public class Game
         System.out.println("You are green.");
         System.out.println("exit with q");
         while(true) {
+            game.draw(field);
             if (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
                     int r=scanner.nextInt();
@@ -339,6 +374,8 @@ public class Game
                     break;
                 }
                 
+                game.draw(field);
+
                 game.botPlace(field, Chip.RED);
                 winner = game.theWinnerIs(field);
                 if (winner != null) {
@@ -346,8 +383,8 @@ public class Game
                     break;
                 }
             }
-        
         }
+        game.draw(field);
     }
     
 }

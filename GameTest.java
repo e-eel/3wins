@@ -346,6 +346,51 @@ public class GameTest
         assertEquals (0.0,result,0.0001);
         
     }
+    @Test
+    public void liklihood_to_win_should_return_0_58_in_the_middle_column_in_a_5x5_playground()
+    {
+        Game game = new Game(3);
+        Chip field[][] = new Chip[5][5];
+        double result=game.liklihoodToWin(0, field,2,Chip.GREEN);
+        assertEquals (0.58,result,0.01);
+        
+    }
+    @Test
+    public void liklihood_to_win_should_return_0_58_in_the_left_column_in_a_5x5_playground()
+    {
+        Game game = new Game(3);
+        Chip field[][] = new Chip[5][5];
+        double result=game.liklihoodToWin(0, field,1,Chip.GREEN);
+        assertEquals (0.0,result,0.01);
+        
+    }
+    @Test
+    public void liklihood_to_win_should_return_0_58_in_the_far_left_column_in_a_5x5_playground()
+    {
+        Game game = new Game(3);
+        Chip field[][] = new Chip[5][5];
+        double result=game.liklihoodToWin(0, field,0,Chip.GREEN);
+        assertEquals (0.0,result,0.01);
+        
+    }
+    @Test
+    public void liklihood_to_win_should_return_0_58_in_the_right_column_in_a_5x5_playground()
+    {
+        Game game = new Game(3);
+        Chip field[][] = new Chip[5][5];
+        double result=game.liklihoodToWin(0, field,3,Chip.GREEN);
+        assertEquals (0.0,result,0.01);
+        
+    }
+    @Test
+    public void liklihood_to_win_should_return_0_58_in_the_far_right_column_in_a_5x5_playground()
+    {
+        Game game = new Game(3);
+        Chip field[][] = new Chip[5][5];
+        double result=game.liklihoodToWin(0, field,4,Chip.GREEN);
+        assertEquals (0.0,result,0.01);
+        
+    }
 }
 
 
