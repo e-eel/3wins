@@ -15,9 +15,64 @@ public class Game
 
     private Game() {}
 
-    public Game (WinAlgorithm winAlgorithm, int calculationDepth){
+    protected Game (WinAlgorithm winAlgorithm, int calculationDepth){
         this.winAlgorithm=winAlgorithm;
         this.calculationDepth=calculationDepth;
+    }
+
+    public Game (int calculationDepth, boolean youStart) {
+        // this.winAlgorithm = new NWinAlgorithm(3); 
+        this.winAlgorithm = new ThreeWinAlgorithm();
+        this.calculationDepth=calculationDepth;
+
+        Scanner scanner = new Scanner(System.in);
+        boolean youPlay=youStart;
+     
+        Chip field[][] = new Chip[5][5];
+
+        System.out.println("You are green.");
+        System.out.println("exit with q");
+        while(true) {
+            draw(field);
+           
+            if (youPlay == true && scanner.hasNext()) {
+                
+                if (scanner.hasNextInt()) {
+                    int r=scanner.nextInt();
+                    String result = placeChipInColumn(field, r, Chip.GREEN);
+                    System.out.println(result);
+                    
+                    if (!"".equals(result)){
+                        continue;
+                    }
+                } else {
+                    String s = scanner.next();
+                    if (s.equals("q")) {
+                        break;
+                    }
+                }
+                Chip winner = winAlgorithm.theWinnerIs(field);
+                if (winner != null) {
+                    System.out.println("the winner is: " + winner.name());
+                    break;
+                }
+
+               
+            }
+            draw(field);
+
+            botPlace(field, Chip.RED);
+            Chip winner = winAlgorithm.theWinnerIs(field);
+            if (winner != null) {
+                System.out.println("the winner is: " + winner.name());
+                break;
+
+            }
+            youPlay = true;
+        }
+
+        draw(field);
+
     }
 
     public String placeChipInColumn(Chip[][] field, int column, Chip chip) {
@@ -193,50 +248,11 @@ public class Game
     }
     
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        //WinAlgorithm winAlgorithm = new NWinAlgorithm(3); 
-        WinAlgorithm winAlgorithm = new ThreeWinAlgorithm();
-        Game game = new Game(winAlgorithm, 13);
-
-        Chip field[][] = new Chip[5][5];
-
-        System.out.println("You are green.");
-        System.out.println("exit with q");
-        while(true) {
-            game.draw(field);
-            if (scanner.hasNext()) {
-                if (scanner.hasNextInt()) {
-                    int r=scanner.nextInt();
-                    String result = game.placeChipInColumn(field, r, Chip.GREEN);
-                    System.out.println(result);
-                    
-                    if (!"".equals(result)){
-                        continue;
-                    }
-                } else {
-                    String s = scanner.next();
-                    if (s.equals("q")) {
-                        break;
-                    }
-                }
-                Chip winner = winAlgorithm.theWinnerIs(field);
-                if (winner != null) {
-                    System.out.println("the winner is: " + winner.name());
-                    break;
-                }
-
-                game.draw(field);
-
-                game.botPlace(field, Chip.RED);
-                winner = winAlgorithm.theWinnerIs(field);
-                if (winner != null) {
-                    System.out.println("the winner is: " + winner.name());
-                    break;
-                }
-            }
+        if(args.length!=2){
+            System.out.println("required args: calculationsDeth(8-16) youBeginn(true/false)");
+            System.exit (1);
         }
-        game.draw(field);
+        Game game = new Game(Integer.parseInt(args[0]),Boolean.parseBoolean(args[1]));
     }
     
 }
